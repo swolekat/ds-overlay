@@ -1,0 +1,207 @@
+<html>
+<head>
+    <style>
+        *, *:before, *:after {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            height: 1080px;
+            width: 1920px;
+        }
+
+        .ds {
+            position: relative;
+        }
+
+        .ds img {
+            height: 100%;
+        }
+
+        .button {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 55px;
+            width: 55px;
+            background: #fff;
+            opacity: 0;
+            border-radius: 50%;
+        }
+
+        .button.pressed {
+            opacity: 0.5;
+        }
+
+        #a-button {
+            top: 718px;
+            left: 950px;
+        }
+
+        #b-button {
+            top: 778px;
+            left: 893px;
+        }
+
+        #x-button {
+            top: 718px;
+            left: 834px;
+        }
+
+        #y-button {
+            top: 662px;
+            left: 893px;
+        }
+
+        #start-button {
+            top: 925px;
+            left: 831px;
+            width: 20px;
+            height: 20px;
+        }
+
+        #select-button {
+            top: 985px;
+            left: 831px;
+            width: 20px;
+            height: 20px;
+        }
+
+        .dpad-vertical,
+        .dpad-horizontal {
+            position: absolute;
+            background: #fff;
+            opacity: 0;
+        }
+
+        .dpad-vertical.pressed,
+        .dpad-horizontal.pressed {
+            opacity: 0.5;
+        }
+
+        .dpad-vertical {
+            top: 0;
+            left: 100px;
+            height: 50px;
+            width: 45px;
+        }
+
+        .dpad-horizontal {
+            top: 742px;
+            left: 0;
+            height: 45px;
+            width: 50px;
+        }
+
+        #up-dpad {
+            top: 690px;
+        }
+
+        #down-dpad {
+            top: 789px;
+        }
+
+        #left-dpad {
+            left: 50px;
+        }
+
+        #right-dpad {
+            left: 145px;
+        }
+    </style>
+</head>
+<body>
+    <div class="ds">
+        <img src="./assets/DS_purple_layer.png">
+        <div class="button " id="a-button">
+        </div>
+        <div class="button " id="b-button">
+        </div>
+        <div class="button " id="x-button">
+        </div>
+        <div class="button " id="y-button">
+        </div>
+        <div class="button " id="start-button">
+        </div>
+        <div class="button " id="select-button">
+        </div>
+
+        <div class="dpad-vertical " id="up-dpad">
+        </div>
+        <div class="dpad-vertical " id="down-dpad">
+        </div>
+        <div class="dpad-horizontal " id="left-dpad">
+        </div>
+        <div class="dpad-horizontal " id="right-dpad">
+        </div>
+    </div>
+<script>
+    const aButton = document.getElementById('a-button');
+    const bButton = document.getElementById('b-button');
+    const xButton = document.getElementById('x-button');
+    const yButton = document.getElementById('y-button');
+    const startButton = document.getElementById('start-button');
+    const selectButton = document.getElementById('select-button');
+    const upDpad = document.getElementById('up-dpad');
+    const downDpad = document.getElementById('down-dpad');
+    const leftDpad = document.getElementById('left-dpad');
+    const rightDpad = document.getElementById('right-dpad');
+    const gameLoop = () => {
+        const gamepad = navigator.getGamepads().filter(gp => !!gp)[0];
+        // x is 2
+        // y is 3
+        // b is 1
+        // a is 0
+        // left is 14
+        // up is 12
+        // right is 15
+        // down is 13
+        // start is 9
+        // select is 8
+        if(!gamepad){
+            requestAnimationFrame(gameLoop);
+            return;
+        }
+        const {buttons} = gamepad;
+        const buttonsPressed = [];
+        buttons.forEach((button, index) => {
+            if(button.value > 0 || button.pressed){
+                buttonsPressed.push(index);
+            }
+        });
+        // todo figure out joysticks
+        console.log(JSON.stringify(gamepad.axes));
+        aButton.className = `button ${buttonsPressed.includes(1) ? 'pressed' : ''}`;
+        bButton.className = `button ${buttonsPressed.includes(0) ? 'pressed' : ''}`;
+        xButton.className = `button ${buttonsPressed.includes(2) ? 'pressed' : ''}`;
+        yButton.className = `button ${buttonsPressed.includes(3) ? 'pressed' : ''}`;
+        startButton.className = `button ${buttonsPressed.includes(9) ? 'pressed' : ''}`;
+        selectButton.className = `button ${buttonsPressed.includes(8) ? 'pressed' : ''}`;
+        const [leftX, leftY] = gamepad.axes;
+        const leftIsPressed = buttonsPressed.includes(14) || leftX < -0.5;
+        leftDpad.className = `dpad-horizontal ${leftIsPressed ? 'pressed' : ''}`;
+        const rightIsPressed = buttonsPressed.includes(15) || leftX > 0.5;
+        rightDpad.className = `dpad-horizontal ${rightIsPressed ? 'pressed' : ''}`;
+        const upIsPressed = buttonsPressed.includes(12) || leftY < -0.5;
+        upDpad.className = `dpad-vertical ${upIsPressed ? 'pressed' : ''}`;
+        const downIsPressed = buttonsPressed.includes(13) || leftY > 0.5;
+        downDpad.className = `dpad-vertical ${downIsPressed ? 'pressed' : ''}`;
+
+        requestAnimationFrame(gameLoop);
+    };
+
+    const init = () => {
+        gameLoop();
+    };
+
+    init();
+</script>
+</body>
+</html>
