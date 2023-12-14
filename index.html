@@ -160,18 +160,19 @@
     const downDpad = document.getElementById('down-dpad');
     const leftDpad = document.getElementById('left-dpad');
     const rightDpad = document.getElementById('right-dpad');
+    let xId = 2;
+    let yId = 3;
+    let bId = 0;
+    let aId = 1;
+    let leftId = 14;
+    let rightId = 15;
+    let upId = 12;
+    let downId = 13;
+    let selectId = 8;
+    let startId = 9;
+
     const gameLoop = () => {
         const gamepad = navigator.getGamepads().filter(gp => !!gp)[0];
-        // x is 2
-        // y is 3
-        // b is 1
-        // a is 0
-        // left is 14
-        // up is 12
-        // right is 15
-        // down is 13
-        // start is 9
-        // select is 8
         if(!gamepad){
             requestAnimationFrame(gameLoop);
             return;
@@ -185,20 +186,20 @@
         });
         // todo figure out joysticks
         console.log(JSON.stringify(gamepad.axes));
-        aButton.className = `button ${buttonsPressed.includes(1) ? 'pressed' : ''}`;
-        bButton.className = `button ${buttonsPressed.includes(0) ? 'pressed' : ''}`;
-        xButton.className = `button ${buttonsPressed.includes(2) ? 'pressed' : ''}`;
-        yButton.className = `button ${buttonsPressed.includes(3) ? 'pressed' : ''}`;
-        startButton.className = `button ${buttonsPressed.includes(9) ? 'pressed' : ''}`;
-        selectButton.className = `button ${buttonsPressed.includes(8) ? 'pressed' : ''}`;
+        aButton.className = `button ${buttonsPressed.includes(aId) ? 'pressed' : ''}`;
+        bButton.className = `button ${buttonsPressed.includes(bId) ? 'pressed' : ''}`;
+        xButton.className = `button ${buttonsPressed.includes(xId) ? 'pressed' : ''}`;
+        yButton.className = `button ${buttonsPressed.includes(yId) ? 'pressed' : ''}`;
+        startButton.className = `button ${buttonsPressed.includes(startId) ? 'pressed' : ''}`;
+        selectButton.className = `button ${buttonsPressed.includes(selectId) ? 'pressed' : ''}`;
         const [leftX, leftY] = gamepad.axes;
-        const leftIsPressed = buttonsPressed.includes(14) || leftX < -0.5;
+        const leftIsPressed = buttonsPressed.includes(leftId) || leftX < -0.5;
         leftDpad.className = `dpad-horizontal ${leftIsPressed ? 'pressed' : ''}`;
-        const rightIsPressed = buttonsPressed.includes(15) || leftX > 0.5;
+        const rightIsPressed = buttonsPressed.includes(rightId) || leftX > 0.5;
         rightDpad.className = `dpad-horizontal ${rightIsPressed ? 'pressed' : ''}`;
-        const upIsPressed = buttonsPressed.includes(12) || leftY < -0.5;
+        const upIsPressed = buttonsPressed.includes(upId) || leftY < -0.5;
         upDpad.className = `dpad-vertical ${upIsPressed ? 'pressed' : ''}`;
-        const downIsPressed = buttonsPressed.includes(13) || leftY > 0.5;
+        const downIsPressed = buttonsPressed.includes(downId) || leftY > 0.5;
         downDpad.className = `dpad-vertical ${downIsPressed ? 'pressed' : ''}`;
 
         requestAnimationFrame(gameLoop);
