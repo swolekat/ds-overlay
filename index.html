@@ -206,6 +206,37 @@
     };
 
     const init = () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const newAId= Number.parseInt(urlParams.get('a'));
+        if(!Number.isNaN(newAId)){
+            aId = newAId;
+        }
+
+        const newBId = Number.parseInt(urlParams.get('b'));
+        if(!Number.isNaN(newBId)){
+            bId = newBId;
+        }
+
+        const newXId = Number.parseInt(urlParams.get('x'));
+        if(!Number.isNaN(newXId)){
+            xId = newXId;
+        }
+
+        const newYId = Number.parseInt(urlParams.get('y'));
+        if(!Number.isNaN(newYId)){
+            yId = newYId;
+        }
+
+        const newStartId = Number.parseInt(urlParams.get('start'));
+        if(!Number.isNaN(newStartId)){
+            startId = newStartId;
+        }
+
+        const newSelectId = Number.parseInt(urlParams.get('select'));
+        if(!Number.isNaN(newSelectId)){
+            selectId = newSelectId;
+        }
+
         gameLoop();
     };
 
